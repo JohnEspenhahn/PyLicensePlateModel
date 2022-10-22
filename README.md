@@ -6,3 +6,10 @@
 The Car License Plate Detection component of OpenLPR project.
 
 This repository is part of the [OpenLPR project](https://github.com/faisalthaheem/open-lpr)
+
+# Model
+
+Model mirrors:
+
+- https://api.onedrive.com/v1.0/shares/s!AvNYo0I9EXbwh1mFaEqZNmUjQs99/root/content
+- 

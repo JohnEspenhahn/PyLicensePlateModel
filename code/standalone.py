@@ -16,21 +16,20 @@ logger = logging.getLogger('log')
 logger.setLevel(logging.DEBUG)
 
 args = {
-    "model": "SSD.pth",
     "nms_threshold": 0.5,
     "cls_threshold": 0.5
 }
 
 class StandAloneInference:
     
-    def __init__(self):
+    def __init__(self, model_path):
         self.model = SSD(backbone=ResNet())
 
         if torch.cuda.is_available():
-                checkpoint = torch.load(args['model'])
+                checkpoint = torch.load(model_path)
         else:
                 map_location=torch.device('cpu')
-                checkpoint = torch.load(args['model'], map_location=map_location)
+                checkpoint = torch.load(model_path, map_location=map_location)
 
         self.model.load_state_dict(checkpoint["model_state_dict"])
         if torch.cuda.is_available():

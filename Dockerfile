@@ -1,19 +1,12 @@
-FROM python:3.8.12-slim
-LABEL maintainer="faisal.ajmal@gmail.com"
+FROM 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference:1.10.2-cpu-py38-ubuntu20.04-sagemaker
 
+RUN pip3 --no-cache-dir install easyocr==1.6.2 sagemaker-inference multi-model-server
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y wget curl
+COPY ./code/entrypoint.py /usr/local/bin/dockerd-entrypoint.py
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.py
 
-RUN pip3 install \
-    torch==1.10.2+cpu torchvision==0.11.3+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
-    
-RUN pip3 install easyocr==1.6.2
+RUN mkdir -p /home/model-server/
+ADD ./code /home/model-server/
+ADD ./SSD.pth /home/model-server/
 
-RUN pip3 install multi-model-server sagemaker-inference
-
-WORKDIR /openlpr
-
-ADD ./code /openlpr
-
-ENTRYPOINT  [ "python3", "/openlpr/entrypoint.py"]
+ENTRYPOINT ["python", "/usr/local/bin/dockerd-entrypoint.py"]

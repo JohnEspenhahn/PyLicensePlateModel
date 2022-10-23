@@ -68,3 +68,14 @@ class ModelHandler(object):
         model_input = self.preprocess(data)
         model_out = self.inference(model_input)
         return self.postprocess(model_out)
+
+_service = ModelHandler()
+
+def handle(data, context):
+    if not _service.initialized:
+        _service.initialize(context)
+
+    if data is None:
+        return None
+
+    return _service.handle(data, context)

@@ -1,5 +1,7 @@
 import logging
 
+from standalone import StandAloneInference
+
 class ModelHandler(object):
     """
     A base Model handler implementation.
@@ -10,6 +12,7 @@ class ModelHandler(object):
         self._context = None
         self._batch_size = 0
         self.initialized = False
+        self.standalone = None
 
     def initialize(self, context):
         """
@@ -18,7 +21,7 @@ class ModelHandler(object):
         :return:
         """
         self._context = context
-        self._batch_size = context.system_properties["batch_size"]
+        self._batch_size = 1 # context.system_properties["batch_size"]
         self.initialized = True
         
         logging.basicConfig()
@@ -26,6 +29,8 @@ class ModelHandler(object):
         logger.setLevel(logging.DEBUG)
         
         self.logger = logger
+        
+        self.standalone = StandAloneInference("/home/SSD.pth", download_enabled=False)
 
     def preprocess(self, batch):
         """
@@ -36,9 +41,9 @@ class ModelHandler(object):
         # Take the input data and pre-process it make it inference ready
         assert self._batch_size == len(batch), "Invalid input batch size: {}".format(len(batch))
         
-        self.logger.debug(batch)
+        self.logger.debug("Batch[0]: " + str(batch[0]))
         
-        return None
+        return batch[0]
 
     def inference(self, model_input):
         """
@@ -47,7 +52,7 @@ class ModelHandler(object):
         :return: list of inference output in NDArray
         """
         # Do some inference call to engine here and return output
-        return None
+        return self.standalone.process(model_input)
 
     def postprocess(self, inference_output):
         """
@@ -56,7 +61,7 @@ class ModelHandler(object):
         :return: list of predict results
         """
         # Take output from network and post-process to desired format
-        return ["OK"] * self._batch_size
+        return [inference_output] * self._batch_size
         
     def handle(self, data, context):
         """

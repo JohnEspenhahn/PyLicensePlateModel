@@ -8,6 +8,7 @@ import cv2
 import easyocr
 import torch
 from io import BytesIO
+import base64
 
 from debug_utils import draw_detections
 
@@ -22,7 +23,7 @@ args = {
 
 class StandAloneInference:
     
-    def __init__(self, model_path):
+    def __init__(self, model_path="/home/SSD.pth", download_enabled=True):
         self.model = SSD(backbone=ResNet())
 
         if torch.cuda.is_available():
@@ -39,7 +40,7 @@ class StandAloneInference:
         self.transformer = SSDTransformer(dboxes, (300, 300), val=True)
         self.encoder = Encoder(dboxes)
 
-        self.reader = easyocr.Reader(['en'], gpu=torch.cuda.is_available())
+        self.reader = easyocr.Reader(['en'], gpu=torch.cuda.is_available(), download_enabled=download_enabled)
 
     def detect(self, img, width, height):
         with torch.no_grad():
@@ -121,6 +122,9 @@ class StandAloneInference:
         return self.process(data)
 
     def process(self, data):
+        if isinstance(data, str):
+            data = base64.b64decode(data)
+        
         img = Image.open(BytesIO(data)).convert("RGB")
 
         width = img.width
@@ -133,7 +137,7 @@ class StandAloneInference:
         # detect plates
         detections = self.detect(img, width, height)
 
-        if len(detections) < 0:
+        if len(detections['boxes']) == 0:
             return ""
 
         # draw_detections(diskpath, detections)

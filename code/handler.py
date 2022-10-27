@@ -43,7 +43,7 @@ class ModelHandler(object):
         
         self.logger.debug("Batch[0]: " + str(batch[0]))
         
-        return batch[0]
+        return batch[0]['body']
 
     def inference(self, model_input):
         """

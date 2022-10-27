@@ -24,4 +24,7 @@ RUN python -c 'from standalone import StandAloneInference; StandAloneInference()
 RUN cp -a /root/.cache/ /home/sbx_user1051/.cache/
 RUN chmod -R 777 /home/sbx_user1051/.cache
 
+RUN cp -a /root/.EasyOCR/ /home/sbx_user1051/.EasyOCR/
+RUN chmod -R 777 /home/sbx_user1051/.EasyOCR
+
 ENTRYPOINT ["python", "/usr/local/bin/dockerd-entrypoint.py"]

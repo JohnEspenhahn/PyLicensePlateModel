@@ -9,13 +9,13 @@ RUN mkdir -p /logs
 RUN chmod 777 /logs
 
 RUN mkdir -p /home/sbx_user1051/.cache/torch/hub/checkpoints
-ADD ./resnet50-0676ba61.pth /home/sbx_user1051/.cache/torch/hub/checkpoints/
+RUN curl https://johnespe-open-lpr-plate-detection-model.s3.amazonaws.com/resnet50-0676ba61.pth --output /home/sbx_user1051/.cache/torch/hub/checkpoints/resnet50-0676ba61.pth 
 RUN chmod 777 /home/sbx_user1051/.cache/torch/hub/checkpoints/resnet50-0676ba61.pth
 
 RUN mkdir -p /home/model-server/
 ADD ./code /home/model-server/
 
-ADD ./SSD.pth /home/
+RUN curl https://johnespe-open-lpr-plate-detection-model.s3.amazonaws.com/SSD.pth --output /home/SSD.pth
 RUN chmod 777 /home/SSD.pth
 
 WORKDIR /home/model-server/

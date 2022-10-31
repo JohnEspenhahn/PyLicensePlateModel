@@ -1,0 +1,8 @@
+easyocr==1.6.2
+imageio==2.13.3
+matplotlib==3.3.4
+Pillow==8.3.2
+scipy==1.2.2
+numpy==1.19.1
+torch==1.8.1
+torchvision==0.9.1

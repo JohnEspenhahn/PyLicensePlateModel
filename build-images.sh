@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build -t openlpr/platedetector:3.0 .
+sm-docker build .

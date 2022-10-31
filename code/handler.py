@@ -41,9 +41,11 @@ class ModelHandler(object):
         # Take the input data and pre-process it make it inference ready
         assert self._batch_size == len(batch), "Invalid input batch size: {}".format(len(batch))
         
-        self.logger.debug("Batch[0]: " + str(batch[0]))
+        model_input = batch[0]['body'].decode('utf8')
         
-        return batch[0]['body']
+        self.logger.debug("model_input: " + model_input)
+        
+        return model_input
 
     def inference(self, model_input):
         """

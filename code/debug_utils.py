@@ -1,5 +1,4 @@
 
-
 def draw_detections(diskpath, detections):
     output_img = cv2.imread(diskpath)
     x, y, xmax, ymax = detections['boxes'][0]

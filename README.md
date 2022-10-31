@@ -1,15 +1,27 @@
-|Last commit|Docker CI Health|Docker pulls|
-|---|---|---|
-|![GithubLastCommit](https://img.shields.io/github/last-commit/faisalthaheem/open-lpr-plate-detection)|[![Docker Image CI](https://github.com/faisalthaheem/open-lpr-plate-detection/actions/workflows/docker-image.yml/badge.svg)](https://github.com/faisalthaheem/open-lpr-plate-detection/actions/workflows/docker-image.yml)|![DockerPulls](https://img.shields.io/docker/pulls/faisalthaheem/open-lpr-plate-detection)|
-
 # OpenLPR Plate Detection
 The Car License Plate Detection component of OpenLPR project.
 
-This repository is part of the [OpenLPR project](https://github.com/faisalthaheem/open-lpr)
+This repository is forked from [OpenLPR project](https://github.com/faisalthaheem/open-lpr)
 
-# Model
+# Deploying
+```
+pip install sagemaker-studio-image-build
 
-Model mirrors:
+sm-docker build .
+```
 
-- https://api.onedrive.com/v1.0/shares/s!AvNYo0I9EXbwh1mFaEqZNmUjQs99/root/content
-- 
+
+# Testing locally
+Download model from https://johnespe-open-lpr-plate-detection-model.s3.amazonaws.com/SSD.pth 
+
+Install peer dependencies
+```
+pip install -r requirements.txt
+```
+
+Run
+```
+from standalone import StandAloneInference
+
+StandAloneInference(model_path="SSD.pth").process_from_disk("photo.jpg")
+```
